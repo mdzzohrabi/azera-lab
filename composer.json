@@ -1,0 +1,19 @@
+{
+	"name": "azera/lab",
+	"authors": [
+		{
+			"name": "Masoud Zohrabi",
+			"email": "mdzzohrabi@gmail.com"
+		}
+	],
+	"require": {
+		"mdzzohrabi/azera-core": "dev-master",
+		"mdzzohrabi/azera-annotation": "dev-master",
+		"symfony/yaml": "2.*"
+	},
+    "autoload": {
+        "psr-4": {
+            "Azera\\Lab\\": ""
+        }
+    }
+}
