@@ -1,5 +1,7 @@
 # Azera Lab v1.0
 
+**Author :** Masoud Zohrabi ( <mdzzohrabi@gmail.com> )
+
 [TOC]
 
 ##Case : Entity access performance
