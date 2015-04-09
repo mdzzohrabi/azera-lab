@@ -33,5 +33,15 @@ Set column by setter and validate  | 10000 | 0.85791707038879  |  144
 Test                | Scale |       Time        | Memory
 ----------------|-------------|-------------|--------------------
 Search in entities dynamic var   |   1   | 0.094137907028198 |  120   
+Search in entities static var    |   1   | 0.018819093704224 |  120  
 Search in entities doctrine getter |   1   | 0.07529616355896  |  120   
 Search in arrays          |   1   | 0.017956018447876 |  112   
+
+### Result
+Job | Array | Setter And Getter | Dynamic Column | Direct Column
+--|--|--|--
+Search ($10^4$ Rows) | 0.018 | 0.075 **(4x)** | 0.094 **(5.25x)** | 0.019 **(~1x)**
+Set Value ($10^4$ times) | 0.530 | 0.857[^set_value] **(1.61x)** | 0.900 **(1.69x)**[^set_value] | 0.535 **(~1x)**
+Get Value ($10^4$ times) | 0.522 | 0.596 **(1.14x)** | 0.607 **(1.16x)** | 0.525 **(~1x)**
+
+[^set_value]: Validation does while setting value.
