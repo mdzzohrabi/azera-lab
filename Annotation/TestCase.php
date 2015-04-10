@@ -18,5 +18,15 @@ class TestCase {
 	 */
 	public $defaultScale = 1;
 
+	/**
+	 * @var string
+	 */
+	public $timePattern = '%.4f s';
+
+	/**
+	 * @var boolean
+	 */
+	public $markdown = false;
+
 }
 ?>

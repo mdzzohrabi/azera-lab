@@ -19,11 +19,16 @@ class TestCase {
 	private $defaultScale = 1;
 
 	/**
+	 * @var Azera\Lab\Annotation\TestCase
+	 */
+	private $annotation;
+
+	/**
 	 * Tests
 	 * @var Azera\Lab\Test[]
 	 */
 	private $tests = array();
-	
+
 	function __construct( $name = null ) {
 
 		$this->name = $name;
@@ -42,7 +47,7 @@ class TestCase {
 		Annotation\Reader::registerFile( __DIR__ . '/Annotation/TestCase.php' );
 		Annotation\Reader::registerNamespace( 'Azera\Lab\Annotation' , __DIR__ . '/Annotation' );
 
-		$testCase = AnnotationReader::readClass( $this , Annotation\TestCase::class );
+		$this->annotation = $testCase = AnnotationReader::readClass( $this , Annotation\TestCase::class );
 
 		if ( $testCase )
 		{
@@ -56,7 +61,8 @@ class TestCase {
 				$this->add( new Test(
 						$test->name,
 						[ $this , $method->getName() ],
-						$test->scale ?: $this->defaultScale
+						$test->scale ?: $this->defaultScale,
+						$test->description
 					) );
 			}
 
@@ -84,24 +90,29 @@ class TestCase {
 
 		$totalTime = 0;
 
-		print "Azera Lab v1.0\n";
-		print "Case : $this->name\n\n";
+		$md = $this->annotation->markdown;
+
+		print ( $md ? '# ' : null ) . "Azera Lab v1.0\n";
+		print ( $md ? '## ' : null ) . "Case : $this->name\n\n";
 
 		$table = new Console_Table;
 
-		$table->setHeaders([ 'Test' , 'Scale' , 'Time' , 'Memory' ]);
+		if ( $this->annotation->markdown )
+			$table->setBorder( [ 'intersection' => '|' , 'vertical' => '|' , 'horizontal' => '-' ] );
+
+		$table->setHeaders([ 'Test' , 'Scale' , 'Time' , 'Memory' , 'Description' ]);
 
 		foreach ( $this->tests as &$test ) {
 
 			$test->run();
 
-			$table->addRow( [ $test->getName() , $test->getScale() , $test->getTime() , $test->getMemory() ] );
+			$table->addRow( [ $test->getName() , $test->getScale() , sprintf( $this->annotation->timePattern , $test->getTime() ) , $test->getMemory() , $test->getDescription() ] );
 
 			$totalTime += $test->getTime();
 
 		}
 
-		$table->addRow( [ '-' , '-' , $totalTime , '-' ] );
+		$table->addRow( [ '-' , '-' , sprintf( $this->annotation->timePattern , $totalTime ) , '-' , '-' ] );
 
 		print $table->getTable();
 

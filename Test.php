@@ -8,12 +8,14 @@ class Test {
 	private $scale = 1;
 	private $executeTime;
 	private $executeMemory;
+	private $description;
 
-	function __construct( $name , $test , $scale = 1 ) {
+	function __construct( $name , $test , $scale = 1 , $description = null ) {
 
 		$this->name = $name;
 		$this->test = $test;
 		$this->scale = $scale;
+		$this->description = $description;
 
 	}
 
@@ -22,7 +24,7 @@ class Test {
 		$memory = memory_get_usage();
 		$time = microtime( true );
 		for ( $i = 0 ; $i < $this->scale ; $i++ )
-			call_user_func( $this->test );
+			call_user_func_array( $this->test , [ $this ] );
 		$memory = memory_get_usage() - $memory;
 		$time = microtime( true ) - $time;
 
@@ -40,6 +42,13 @@ class Test {
 	function getMemory() { return $this->executeMemory; }
 
 	function getName() { return $this->name; }
+
+	function getDescription() { return $this->description; }
+
+	function setDescription( $des )
+	{
+		$this->description = $des;
+	}
 
 }
 ?>

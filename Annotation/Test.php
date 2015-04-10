@@ -18,5 +18,10 @@ class Test {
 	 */
 	public $scale;
 
+	/**
+	 * @var string
+	 */
+	public $description;
+
 }
 ?>
